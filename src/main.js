@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import store from "./store";
 
-import JobSearchMainPageContainer from './containers/jobSearch/JobSearchMainPageContainer';
 
 ReactDOM.render(
     <Provider store={store}>
-        <JobSearchMainPageContainer />
+        <p>Hello World</p>
     </Provider>,
     document.getElementById('app')
 );

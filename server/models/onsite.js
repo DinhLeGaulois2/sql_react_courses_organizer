@@ -1,5 +1,23 @@
 module.exports = function (sequelize, Sequelize) {
     const Onsite = sequelize.define("onsite", {
+        location: {
+            type: Sequelize.STRING,
+            validate: {
+                notEmpty: true,
+            }
+        },        
+        days: {
+            type: Sequelize.STRING,
+            validate: {
+                notEmpty: true,
+            }
+        },        
+        time: {
+            type: Sequelize.TIME,
+            validate: {
+                notEmpty: true,
+            }
+        }
     });
 
     return Onsite;

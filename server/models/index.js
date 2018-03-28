@@ -24,49 +24,38 @@ var sequelize = new Sequelize(DBInfo.database, DBInfo.username, DBInfo.password,
 db.sequelize = sequelize; // the library
 db.Sequelize = Sequelize;
 
-db.course = require('../models/course.js')(sequelize, Sequelize)
-db.courseInstructor = require('../models/courseInstructor.js')(sequelize, Sequelize)
-db.department = require('../models/department.js')(sequelize, Sequelize)
-db.index = require('../models/index.js')(sequelize, Sequelize)
-db.list.txt = require('../models/list.txt.js')(sequelize, Sequelize)
-db.officeAssignment = require('../models/officeAssignment.js')(sequelize, Sequelize)
-db.online = require('../models/online.js')(sequelize, Sequelize)
-db.onsite = require('../models/onsite.js')(sequelize, Sequelize)
-db.person = require('../models/person.js')(sequelize, Sequelize)
-db.studentGrade = require('../models/studentGrade.js')(sequelize, Sequelize)
+db.course = require('../models/course.js')(sequelize, Sequelize);
+db.courseInstructor = require('../models/courseInstructor.js')(sequelize, Sequelize);
+db.department = require('../models/department.js')(sequelize, Sequelize);
+db.officeAssignment = require('../models/officeAssignment.js')(sequelize, Sequelize);
+db.online = require('../models/online.js')(sequelize, Sequelize);
+db.onsite = require('../models/onsite.js')(sequelize, Sequelize);
+db.person = require('../models/person.js')(sequelize, Sequelize);
+db.studentGrade = require('../models/studentGrade.js')(sequelize, Sequelize);
 
 // n-m
-db.person.hasMany(db.courseInstructor)
-db.courseInstructor.belongsTo(db.person)
-db.courseInstructor.belongsTo(db.course)
-db.course.hasMany(db.courseInstructor)
+db.person.hasMany(db.courseInstructor);
+db.courseInstructor.belongsTo(db.person);
+db.courseInstructor.belongsTo(db.course);
+db.course.hasMany(db.courseInstructor);
 
-db.person.hasMany(db.studentGrade)
-db.studentGrade.belongsTo(db.person)
-db.studentGrade.belongsTo(db.course)
-db.course.hasMany(db.studentGrade)
+db.person.hasMany(db.studentGrade);
+db.studentGrade.belongsTo(db.person);
+db.studentGrade.belongsTo(db.course);
+db.course.hasMany(db.studentGrade);
 
 // 1-n
-db.course.belongsTo(db.department)
-db.department.hasMany(db.course)
+db.course.belongsTo(db.department);
+db.department.hasMany(db.course);
 
 // 1-1
-db.person.belongsTo(db.officeAssignment)
-db.officeAssignment.hasOne(db.person)
+db.person.hasOne(db.officeAssignment);
+db.officeAssignment.belongsTo(db.person);
 
-db.officeAssignment.belongsTo(db.person)
-db.person.hasOne(db.officeAssignment)
+db.course.belongsTo(db.onsite);
+db.onsite.hasOne(db.course);
 
-db.course.belongsTo(db.onsite)
-db.onsite.hasOne(db.course)
-
-db.onsite.belongsTo(db.course)
-db.course.hasOne(db.onsite)
-
-db.course.belongsTo(db.online)
-db.online.hasOne(db.course)
-
-db.online.belongsTo(db.course)
-db.course.hasOne(db.online)
+db.course.belongsTo(db.online);
+db.online.hasOne(db.course);
 
 module.exports = db;
