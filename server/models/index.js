@@ -24,33 +24,49 @@ var sequelize = new Sequelize(DBInfo.database, DBInfo.username, DBInfo.password,
 db.sequelize = sequelize; // the library
 db.Sequelize = Sequelize;
 
-db.class = require('../models/class.js')(sequelize, Sequelize)
 db.course = require('../models/course.js')(sequelize, Sequelize)
-db.instructor = require('../models/instructor.js')(sequelize, Sequelize)
-db.professor = require('../models/professor.js')(sequelize, Sequelize)
-db.seat = require('../models/seat.js')(sequelize, Sequelize)
-db.section = require('../models/section.js')(sequelize, Sequelize)
-db.student = require('../models/student.js')(sequelize, Sequelize)
-db.student_course = require('../models/student_course.js')(sequelize, Sequelize)
+db.courseInstructor = require('../models/courseInstructor.js')(sequelize, Sequelize)
+db.department = require('../models/department.js')(sequelize, Sequelize)
+db.index = require('../models/index.js')(sequelize, Sequelize)
+db.list.txt = require('../models/list.txt.js')(sequelize, Sequelize)
+db.officeAssignment = require('../models/officeAssignment.js')(sequelize, Sequelize)
+db.online = require('../models/online.js')(sequelize, Sequelize)
+db.onsite = require('../models/onsite.js')(sequelize, Sequelize)
+db.person = require('../models/person.js')(sequelize, Sequelize)
+db.studentGrade = require('../models/studentGrade.js')(sequelize, Sequelize)
 
 // n-m
-db.student.hasMany(db.student_course)
-db.student_course.belongsTo(db.student)
-db.student_course.belongsTo(db.course)
-db.course.hasMany(db.student_course)
+db.person.hasMany(db.courseInstructor)
+db.courseInstructor.belongsTo(db.person)
+db.courseInstructor.belongsTo(db.course)
+db.course.hasMany(db.courseInstructor)
 
-db.course.hasMany(db.class)
-db.class.belongsTo(db.course)
-db.class.belongsTo(db.section)
-db.section.hasMany(db.class)
+db.person.hasMany(db.studentGrade)
+db.studentGrade.belongsTo(db.person)
+db.studentGrade.belongsTo(db.course)
+db.course.hasMany(db.studentGrade)
 
 // 1-n
-db.course.belongsTo(db.instructor)
-db.instructor.hasMany(db.course)
-
-db.section.belongsTo(db.professor)
-db.professor.hasMany(db.section)
+db.course.belongsTo(db.department)
+db.department.hasMany(db.course)
 
 // 1-1
-db.seat.belongsTo(db.student)
-db.student.hasOne(db.seat)
+db.person.belongsTo(db.officeAssignment)
+db.officeAssignment.hasOne(db.person)
+
+db.officeAssignment.belongsTo(db.person)
+db.person.hasOne(db.officeAssignment)
+
+db.course.belongsTo(db.onsite)
+db.onsite.hasOne(db.course)
+
+db.onsite.belongsTo(db.course)
+db.course.hasOne(db.onsite)
+
+db.course.belongsTo(db.online)
+db.online.hasOne(db.course)
+
+db.online.belongsTo(db.course)
+db.course.hasOne(db.online)
+
+module.exports = db;
