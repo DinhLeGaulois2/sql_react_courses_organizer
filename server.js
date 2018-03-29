@@ -23,7 +23,10 @@ app.set('port', PORT);
 var db = require("./server/models");
 
 // Import routes and give the server access to them.
-require("./server/routes/api-routes.js")(app);
+require("./server/routes/api-routes-insert.js")(app);
+require("./server/routes/api-routes-read.js")(app);
+require("./server/routes/api-routes-delete.js")(app);
+require("./server/routes/api-routes-update.js")(app);
 require("./server/routes/html-routes.js")(app);
 
 db.sequelize.sync({ force: true }).then(function () {
