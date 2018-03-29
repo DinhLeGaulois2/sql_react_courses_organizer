@@ -27,7 +27,6 @@ db.Sequelize = Sequelize;
 db.course = require('../models/course.js')(sequelize, Sequelize);
 db.courseInstructor = require('../models/courseInstructor.js')(sequelize, Sequelize);
 db.department = require('../models/department.js')(sequelize, Sequelize);
-db.officeAssignment = require('../models/officeAssignment.js')(sequelize, Sequelize);
 db.online = require('../models/online.js')(sequelize, Sequelize);
 db.onsite = require('../models/onsite.js')(sequelize, Sequelize);
 db.person = require('../models/person.js')(sequelize, Sequelize);
@@ -49,9 +48,6 @@ db.course.belongsTo(db.department);
 db.department.hasMany(db.course);
 
 // 1-1
-db.person.hasOne(db.officeAssignment, { foreignKey: 'instructorId'});
-db.officeAssignment.belongsTo(db.person, { foreignKey: 'instructorId'});
-
 db.course.belongsTo(db.onsite);
 db.onsite.hasOne(db.course);
 
