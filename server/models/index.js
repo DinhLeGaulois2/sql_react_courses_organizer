@@ -49,8 +49,8 @@ db.course.belongsTo(db.department);
 db.department.hasMany(db.course);
 
 // 1-1
-db.person.hasOne(db.officeAssignment);
-db.officeAssignment.belongsTo(db.person);
+db.person.hasOne(db.officeAssignment, { foreignKey: 'instructorId'});
+db.officeAssignment.belongsTo(db.person, { foreignKey: 'instructorId'});
 
 db.course.belongsTo(db.onsite);
 db.onsite.hasOne(db.course);
