@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import store from "./store";
 
+import TestContainer from './containers/TestContainer'
 
 ReactDOM.render(
     <Provider store={store}>
-        <p>Hello World</p>
+        <TestContainer />
     </Provider>,
     document.getElementById('app')
 );
