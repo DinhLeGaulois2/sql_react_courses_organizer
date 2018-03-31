@@ -48,10 +48,10 @@ db.course.belongsTo(db.department);
 db.department.hasMany(db.course);
 
 // 1-1
-db.course.belongsTo(db.onsite);
-db.onsite.hasOne(db.course);
+db.course.hasMany(db.onsite);
+db.onsite.belongsTo(db.course);
 
-db.course.belongsTo(db.online);
-db.online.hasOne(db.course);
+db.course.hasOne(db.online);
+db.online.belongsTo(db.course);
 
 module.exports = db;

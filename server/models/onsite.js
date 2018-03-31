@@ -1,5 +1,10 @@
 module.exports = function (sequelize, Sequelize) {
     const Onsite = sequelize.define("onsite", {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
         location: {
             type: Sequelize.STRING,
             validate: {

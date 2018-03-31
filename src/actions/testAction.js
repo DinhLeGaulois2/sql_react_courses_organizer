@@ -4,34 +4,25 @@ import cst from '../constants/testConstant'
 
 const testAction = {
     testAPIRequest: () => {
-        // return (dispatch) => {
-        //     axios.get("/api/test")
-        //         .then(data => {
-        //             console.log("Test Request!")
-        //             console.log("Result: " + JSON.stringify(data))
-        //             dispatch({
-        //                 type: cst.TEST_RESULT,
-        //                 payload: data
-        //             })
-        //         })
-        //         .catch(err => console.log("Request error: " + err))
-        // }
+        return (dispatch) => {
+            const dpt = {
+                name: "depart_1",
+                budget: 1000000,
+                startDate: "2018-03-30 04:05:09",
+                administrator: "James Bond"
+            }
 
-        return (dispatch, getState) => {
-            let state = getState() // if we need the State
-            //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            console.log("testAPIRequest, add/department, data: " + JSON.stringify(state.test.data))
-            // axios.post("/api/add/department")
-            //     .then(data => {
-            //         console.log("Test Request!")
-            //         console.log("Result: " + JSON.stringify(data))
-            //         dispatch({
-            //             type: cst.TEST_RESULT,
-            //             payload: data
-            //         })
-            //     })
-            //     .catch(err => console.log("Request error: " + err))
-        }
+            axios.post("/api/add/department", dpt)
+                .then(data => {
+                    console.log("Test Request!")
+                    console.log("Result: " + JSON.stringify(data, null, 5))
+                    dispatch({
+                        type: cst.TEST_RESULT,
+                        payload: data
+                    })
+                })
+                .catch(err => console.log("Request error: " + err))
+        }        
     }
 }
 

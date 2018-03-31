@@ -1,8 +1,9 @@
 module.exports = function (sequelize, Sequelize) {
     const Person = sequelize.define("person", {
         id: {
-            type: Sequelize.STRING,
-            primaryKey: true
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         lastName: {
             type: Sequelize.STRING,
