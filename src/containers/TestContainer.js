@@ -14,8 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 // You have to connect() to any reducers that you wish to connect to yourself
 const TestContainer = connect(
-    null,
-    // mapStateToProps,
+    mapStateToProps,
     mapDispatchToProps
 )(TestComponent)
 
