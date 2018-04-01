@@ -36,6 +36,7 @@ module.exports = function (app) {
             where: {
                 lastName: dpt.lastName,
                 firstName: dpt.firstName,
+                type: 'instructor',
                 hireDate: dpt.hireDate,
                 enrollmentDate: dpt.enrollmentDate
             }
@@ -49,6 +50,7 @@ module.exports = function (app) {
             where: {
                 lastName: dpt.lastName,
                 firstName: dpt.firstName,
+                type: 'student',
                 hireDate: dpt.hireDate,
                 enrollmentDate: dpt.enrollmentDate
             }
