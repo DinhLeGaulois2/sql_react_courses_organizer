@@ -13,7 +13,15 @@ module.exports = function (sequelize, Sequelize) {
         },
         firstName: {
             type: Sequelize.STRING,
-            primaryKey: true
+            validate: {
+                notEmpty: true,
+            }
+        },
+        type: { // "instructor", "student"
+            type: Sequelize.STRING,
+            validate: {
+                notEmpty: true,
+            }
         },
         hireDate: {
             type: Sequelize.DATE,
@@ -23,7 +31,9 @@ module.exports = function (sequelize, Sequelize) {
         },
         enrollmentDate: {
             type: Sequelize.DATE,
-            primaryKey: true
+            validate: {
+                notEmpty: true,
+            }
         }
     });
 
