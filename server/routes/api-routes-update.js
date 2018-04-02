@@ -1,10 +1,17 @@
 const Sequelize = require('sequelize');
+const models = require('../models') // DB's models
+var sequelize = models.sequelize
+
 
 const Op = Sequelize.Op;
 
 const db = require("../models");
 
 module.exports = function (app) {
+    ///////////////////////////////////////////////////////////////
+    /////////////////// Need to use TRANSACTION ///////////////////
+    ///////////////////////////////////////////////////////////////
+
     app.put("/api/put/department", (req, res) => {
         db.department.findOne({ where: { id: req.body.id } })
             .then(data => {
@@ -14,13 +21,8 @@ module.exports = function (app) {
                     db.department.update({
                         budget: req.body.budget,
                         administrator: req.body.administrator
-                    }, {
-                            where: {
-                                id: req.body.id,
-                                returning: true,
-                                plain: true
-                            }
-                        }).then(data => res.status(200).json("Update Successfully!"))
+                    }, { where: { id: req.body.id } })
+                        .then(data => res.status(200).json("Update Successfully!"))
                         .catch(err => res.status(400).json(err))
                 }
             })

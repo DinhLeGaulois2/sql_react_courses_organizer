@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const models = require('../models')
+const models = require('../models') // DB's models
 var sequelize = models.sequelize
 
 const Op = Sequelize.Op;
@@ -65,7 +65,7 @@ module.exports = function (app) {
 
         return sequelize.transaction(t => {
             return db.person.findOne({
-                where: { id: dpt.instructorId }
+                where: { id: dpt.instructorId, type: 'instructor' }
             }, { transaction: t }).then(data => {
                 return db.course.findOne({ where: { id: dpt.courseId } }, { transaction: t })
                     .then(data => {
@@ -82,28 +82,25 @@ module.exports = function (app) {
     })
 
     app.post("/api/add/course-student", (req, res) => {
-        const dpt = req.body
-        db.person.findOne({
-            where: { id: dpt.studentId }
-        }).then(data => {
-            if (data == null) res.status(400).json("Could not find a student with an ID of '" + dpt.studentId + "'")
-            else {
-                db.course.findOne({ where: { id: dpt.courseId } })
+        const dpt = req.body        
+
+        return sequelize.transaction(t => {
+            return db.person.findOne({
+                where: { id: dpt.studentId, type: 'student'}
+            }, { transaction: t }).then(data => {
+                return db.course.findOne({ where: { id: dpt.courseId } }, { transaction: t })
                     .then(data => {
-                        db.courseIntructor.findOrCreate({
+                        return db.studentGrade.findOrCreate({
                             where: {
                                 courseId: dpt.courseId,
                                 personId: dpt.studentId,
                                 grade: ""
                             }
-                        }).then(data => res.status(200).json("Insertion Successfully!"))
-                            .catch(err => res.status(400).json("Could not insert course-student, err: " + err))
+                        }) // No "{ transaction: t }" for the last action
                     })
-                    .catch(err => res.status(400).json("Could not find a course with an ID of '" + dpt.courseId + "'"))
-            }
-            res.status(200).json(data)
-        })
-            .catch(err => res.status(400).json(err))
+            })
+        }).then(data => { res.status(200).json(data) })
+            .catch(err => res.status(400).json("Insertion Err: " + err))
     })
 
     app.post("/api/set/course/online", (req, res) => {
