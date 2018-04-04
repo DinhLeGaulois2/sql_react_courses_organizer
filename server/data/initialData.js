@@ -1275,7 +1275,7 @@ const letInitiate = () => {
                             .then(data => {
                                 db.person.bulkCreate(peopleNames)
                                     .then(data => { console.log("Initiation: Success!") })
-                                    .catch(err => { console.log("Could not initiation 'people'") })
+                                    .catch(err => { console.log("Could not do initiation for 'people'") })
                             })
                             .catch(err => console.log("Could not initiate the 'courses', err: " + err))
                     })
