@@ -38,8 +38,8 @@ db.courseInstructor.belongsTo(db.person);
 db.courseInstructor.belongsTo(db.course);
 db.course.hasMany(db.courseInstructor);
 
-db.person.hasMany(db.studentGrade);
-db.studentGrade.belongsTo(db.person);
+db.person.hasMany(db.studentGrade, {foreignKey: 'studentId'});
+db.studentGrade.belongsTo(db.person, {foreignKey: 'studentId'});
 db.studentGrade.belongsTo(db.course);
 db.course.hasMany(db.studentGrade);
 

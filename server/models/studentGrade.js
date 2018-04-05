@@ -5,15 +5,8 @@ module.exports = function (sequelize, Sequelize) {
             primaryKey: true,
             autoIncrement: true,
         },
-        enrollmentId: {
-            type: Sequelize.STRING,
-            primaryKey: true
-        },
         grade: {
-            type: Sequelize.STRING,
-            validate: {
-                notEmpty: true,
-            }
+            type: Sequelize.STRING
         }
     });
 

@@ -18,7 +18,7 @@ module.exports = function (sequelize, Sequelize) {
             }
         },        
         time: {
-            type: Sequelize.TIME,
+            type: Sequelize.STRING,
             validate: {
                 notEmpty: true,
             }
