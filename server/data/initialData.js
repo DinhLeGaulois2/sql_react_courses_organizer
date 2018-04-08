@@ -10,6 +10,9 @@ const peopleNames = require("./peopleNames.js");
 const studentGrade = require("./studentGrade.js");
 
 let letInitiate = () => {
+    // We could use Sequelize 'transaction' to avoid to build some 'table' but not some other. However, 
+    //    (only for development purpose only) by using this (dump) way, we could get error's message
+    //    corresponding to the 'table' that had problem, it's easier to see the errors ...
     db.department.findAll()
         .then(data => {
             if (data.length == 0) { // the database is empty!!!!
