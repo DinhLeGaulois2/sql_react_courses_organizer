@@ -28,7 +28,7 @@ At the project's root folder, we have a file name "**server.js**", by the end, w
 
 ![alt text](assets/img/server_config.jpg)
 
-It's very important to follow the instruction, otherwise, you could have very disapported surprises ...
+It's very important to follow the instruction, otherwise, you could have very disappointed surprises ...
 
 ---------------
 
