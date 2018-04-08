@@ -28,7 +28,11 @@ let letInitiate = () => {
                                                     .then(data => {
                                                         db.studentGrade.bulkCreate(studentGrade)
                                                             .then(data =>
-                                                                console.log("Initiation: Success!"))
+                                                                db.courseInstructor.bulkCreate(courseInstructor)
+                                                                    .then(data =>
+                                                                        console.log("Initiation: Success!"))
+                                                                    .catch(err => console.log("Could not initiate 'courseInstructor', err: " + err))
+                                                            )
                                                             .catch(err => console.log("Could not initiate 'studentGrade', err: " + err))
                                                     })
                                                     .catch(err => console.log("Could not initiate 'online'"))
@@ -42,7 +46,7 @@ let letInitiate = () => {
                     })
                     .catch(err => console.log("Could not initiate the 'department', err: " + err))
             }
-            else console.log("No Need to Initiate! It Was Done Before! " + JSON.stringify(data, null, 5))
+            else console.log("No Need to Initiate! It Was Done Before! ")
         })
 };
 

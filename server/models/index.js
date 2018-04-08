@@ -33,13 +33,15 @@ db.person = require('../models/person.js')(sequelize, Sequelize);
 db.studentGrade = require('../models/studentGrade.js')(sequelize, Sequelize);
 
 // n-m
-db.person.hasMany(db.courseInstructor);
-db.courseInstructor.belongsTo(db.person);
+db.person.hasMany(db.courseInstructor, {foreignKey: 'instructorId'});
+db.courseInstructor.belongsTo(db.person, {foreignKey: 'instructorId'});
+
 db.courseInstructor.belongsTo(db.course);
 db.course.hasMany(db.courseInstructor);
 
-db.person.hasMany(db.studentGrade, {foreignKey: 'studentId'});
-db.studentGrade.belongsTo(db.person, {foreignKey: 'studentId'});
+db.person.hasMany(db.studentGrade, {foreignKey: 'studendId'});
+db.studentGrade.belongsTo(db.person, {foreignKey: 'studendId'});
+
 db.studentGrade.belongsTo(db.course);
 db.course.hasMany(db.studentGrade);
 
