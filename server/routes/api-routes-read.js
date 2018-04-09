@@ -120,8 +120,8 @@ module.exports = function (app) {
             ]
         })
             .then(data => {
+                // get number of student - recursively - for each course
                 const byCourse = (list) => {
-
                     if (list.length) {
                         let aObj = list.shift()
                         let objC = {

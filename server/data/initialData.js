@@ -40,7 +40,6 @@ let letInitiate = () => {
                                             .catch(err => console.log("Could not initiate 'onsite'"))
                                     })
                                     .catch(err => { console.log("Could not do initiation for 'people'") })
-
                             })
                             .catch(err => console.log("Could not initiate the 'courses', err: " + err))
                     })
