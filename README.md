@@ -13,7 +13,11 @@ Building a project based on an EER (Enhanced Entity-Relationship).
 
 ![alt text](assets/img/SchoolDataModel.jpg)
 
-## Get Requests
+## CREATE - Data Insertion
+| CREATE | - instructor<br> - student<br> - department<br> - course<br> - set course 'Onsite'<br> - set course 'Online'<br> - course-student<br> - course- instructor<br> |
+|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+## READ - Get Requests
 |                |                                                 'Id' / All                                                |
 |----------------|:---------------------------------------------------------------------------------------------------------:|
 | **Instructor** | - First Name + Last Name - Teaching Courses (Online/Onsite + Department + Number of Student by class)     |
