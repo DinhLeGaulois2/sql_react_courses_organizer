@@ -3,7 +3,7 @@
 ## CREATE - Data Insertion
 |                                                                             CREATE                                                                             |
 |:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| instructor<br> student<br> department<br> course<br> set course 'Onsite'<br> set course 'Online'<br> course-student<br> course-instructor<br> |
+| * instructor<br> * student<br>* department<br>* course<br>* set course 'Onsite'<br>* set course 'Online'<br>* course-student<br>* course-instructor |
 
 ---
 
