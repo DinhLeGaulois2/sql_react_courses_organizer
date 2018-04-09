@@ -13,7 +13,7 @@ Building a project based on an EER (Enhanced Entity-Relationship).
 
 ![alt text](assets/img/SchoolDataModel.jpg)
 
-## Requests
+## Get Requests
 |                |                                                 'Id' / All                                                |
 |----------------|:---------------------------------------------------------------------------------------------------------:|
 | **Instructor** | - First Name + Last Name - Teaching Courses (Online/Onsite + Department + Number of Student by class)     |

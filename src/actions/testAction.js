@@ -64,7 +64,7 @@ const testAction = {
                 courseId: 1
             }
 
-            axios.get("/api/get/students")
+            axios.get("/api/get/student/3")
                 .then(data => {
                     console.log("Result: " + JSON.stringify(data, null, 5))
                     //         dispatch({

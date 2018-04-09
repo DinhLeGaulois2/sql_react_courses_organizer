@@ -1,8 +1,4 @@
 const Sequelize = require('sequelize');
-const models = require('../models') // DB's models
-var sequelize = models.sequelize
-
-const Op = Sequelize.Op;
 
 const db = require("../models");
 
@@ -288,79 +284,134 @@ module.exports = function (app) {
             .catch(err => res.status(400).json(err))
     })
 
-    // app.get("/api/get/student/:id", (req, res) => {
-    //     db.person.findOne({ where: { id: req.params.id } })
-    //         .then(data => res.status(200).json(data))
-    //         .catch(err => res.status(400).json(err))
-    // })
+    app.get("/api/get/student/:id", (req, res) => {
+        db.person.findOne({ where: { id: req.params.id } })
+            .then(data => {
+                let objC = { // student's infos
+                    studentId: data.id,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    course: []
+                }
+                db.studentGrade.findAll({
+                    where: { studendId: objC.studentId },
+                    attributes: ['id', 'courseId', 'grade'],
+                    include: [
+                        {
+                            model: db.course,
+                            attributes: ["id", 'title', 'departmentId'],
+                            include: [
+                                {
+                                    model: db.department,
+                                    attributes: ['id', 'name']
+                                },
+                                {
+                                    model: db.onsite,
+                                    attributes: ['id']
+                                },
+                                {
+                                    model: db.online,
+                                    attributes: ['id']
+                                },
+                                {
+                                    model: db.courseInstructor,
+                                    attributes: ['instructorId'],
+                                    include: [
+                                        {
+                                            model: db.person,
+                                            attritutes: ['id', 'firstName', 'lastName']
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                })
+                    .then(data => {
+                        for (let i = 0; i < data.length; i++) {
+                            let tempo = data[i]
+                            objC.course.push({
+                                id: tempo.courseId,
+                                grade: tempo.grade,
+                                title: tempo.course.title,
+                                department: {
+                                    id: tempo.course.department.id,
+                                    name: tempo.course.department.name
+                                },
+                                isOnline: (tempo.course.online == null) ? false : true,
+                            })
+                        }
+                        res.status(200).json(objC)
+                    })
+                    .catch(err => res.status(400).json(err))
+            })
+            .catch(err => res.status(400).json(err))
+    })
 
     app.get("/api/get/students", (req, res) => {
         db.person.findAll({ where: { type: 'student' }, attributes: ['id', 'lastName', 'firstName'] })
             .then(data => {
-                //KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-                // console.log(JSON.stringify(data, null, 5))
-                // res.status(200).json(data)
                 let result = []
                 const byStudent = (list) => {
                     if (list.length) {
                         let aObj = list.shift()
-                        let objC = {
+                        let objC = { // student's infos
                             studentId: aObj.id,
                             firstName: aObj.firstName,
                             lastName: aObj.lastName,
+                            course: []
                         }
-                        db.studentGrade.findAll({where: { studentId: aObj.id }})//{
-                        //     where: { studentId: objC.id },
-                            // attributes: ['id']//, 'courseId', 'studentId', 'grade'],
-                            // include: [
-                            //     {
-                            //         model: db.course,
-                            //         attributes: ["id", 'title', 'departmentId'],
-                            //         // include: [
-                            //         //     {
-                            //         //         model: db.department,
-                            //         //         attributes: ['id', 'name']
-                            //         //     },
-                            //         //     {
-                            //         //         model: db.onsite,
-                            //         //         attributes: ['id']
-                            //         //     },
-                            //         //     {
-                            //         //         model: db.online,
-                            //         //         attributes: ['id']
-                            //         //     },
-                            //         //     {
-                            //         //         model: db.courseInstructor,
-                            //         //         attributes: ['instructorId'],
-                            //         //         include: [
-                            //         //             {
-                            //         //                 model: db.person,
-                            //         //                 attritutes: ['id', 'firstName', 'lastName']
-                            //         //             }
-                            //         //         ]
-                            //         //     }
-                            //         // ]
-                            //     }
-                            // ]
-                        // })
+                        db.studentGrade.findAll({
+                            where: { studendId: objC.studentId },
+                            attributes: ['id', 'courseId', 'grade'],
+                            include: [
+                                {
+                                    model: db.course,
+                                    attributes: ["id", 'title', 'departmentId'],
+                                    include: [
+                                        {
+                                            model: db.department,
+                                            attributes: ['id', 'name']
+                                        },
+                                        {
+                                            model: db.onsite,
+                                            attributes: ['id']
+                                        },
+                                        {
+                                            model: db.online,
+                                            attributes: ['id']
+                                        },
+                                        {
+                                            model: db.courseInstructor,
+                                            attributes: ['instructorId'],
+                                            include: [
+                                                {
+                                                    model: db.person,
+                                                    attritutes: ['id', 'firstName', 'lastName']
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        })
                             .then(data => {
-                                //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                                console.log("data: " + JSON.stringify(objC, null, 5))
-                                // objC.data = data
-                                // let o = data[0]
-                                // objC.course = {
-                                //     id: o.course.courseId,
-                                //     title: o.course.title,
-                                //     department: {
-                                //         id: o.course.department.id,
-                                //         name: o.course.department.name
-                                //     },
-                                //     isOnline: o.course.online == null ? false : true,                                    
-                                //     studentNum: o.course.studentGrades.length
-                                // }
+                                // all informations of all courses
+                                for (let i = 0; i < data.length; i++) {
+                                    let tempo = data[i]
+                                    objC.course.push({
+                                        id: tempo.courseId,
+                                        grade: tempo.grade,
+                                        title: tempo.course.title,
+                                        department: {
+                                            id: tempo.course.department.id,
+                                            name: tempo.course.department.name
+                                        },
+                                        isOnline: (tempo.course.online == null) ? false : true,
+                                    })
+                                }
                                 result.push(objC)
-                                res.status(200).json(result)
-                                // byStudent(list)
+                                byStudent(list)
                             })
                             .catch(err => res.status(400).json("Could not find 'courseInstructor', err: " + err))
                     }
