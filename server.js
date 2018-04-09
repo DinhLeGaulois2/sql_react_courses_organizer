@@ -30,7 +30,7 @@ require("./server/routes/api-routes-delete.js")(app);
 require("./server/routes/api-routes-update.js")(app);
 require("./server/routes/html-routes.js")(app);
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
     initValues();
     app.listen(PORT, function () {
         console.log("App listening on PORT " + PORT);

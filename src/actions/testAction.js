@@ -64,9 +64,8 @@ const testAction = {
                 courseId: 1
             }
 
-            axios.post("/api/add/course-instructor", obj)
+            axios.get("/api/get/students")
                 .then(data => {
-                    console.log("Test Request!")
                     console.log("Result: " + JSON.stringify(data, null, 5))
                     //         dispatch({
                     //             type: cst.TEST_RESULT,
