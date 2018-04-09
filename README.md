@@ -13,7 +13,7 @@ Building a project based on an EER (Enhanced Entity-Relationship).
 
 ![alt text](assets/img/SchoolDataModel.jpg)
 
-## Requests
+## Requests (**C**reate, **R**ead, **U**pdate or **D**elete)
 We could make **C**reate, **R**ead, **U**pdate or **D**elete with this database. All possibilities are listed [here](./assets/docs/requests.md).
 
 ## Configuration (VERY IMPORTANT)

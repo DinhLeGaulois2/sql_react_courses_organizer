@@ -1,4 +1,4 @@
-# REQUEST
+# REQUESTS
 
 ## CREATE - Data Insertion
 |                                                                             CREATE                                                                             |
