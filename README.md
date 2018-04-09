@@ -14,14 +14,14 @@ Building a project based on an EER (Enhanced Entity-Relationship).
 ![alt text](assets/img/SchoolDataModel.jpg)
 
 ## Requests
-|            |                                                       'Id' / All                                                       |
-|------------|:----------------------------------------------------------------------------------------------------------------------:|
-| Instructor | - First Name + Last Name - Teaching Courses    * Online/Onsite    * Department    * Number of Student by class         |
-| Student    | - First Name + Last Name - Taking Courses + Grade     * Online/Onsite,     * Department     * Instructors' Information |
-| Course     | - Title - Online/Onsite -  Department - Instructors' Information - Number of Students                                  |
-| On Site    | - Schedule - Course (title)     * Department's infos     * Instructors' infos     * Number of Students                 |
-| On line    | - URL- Course (title)     * Department's infos     * Instructors' infos     * Number of Students                       |
-| Department | - Dpt's Name - Administrator - Course (title)    * Department's infos    * Instructors' infos    * Number of Students  |
+|                |                                                 'Id' / All                                                |
+|----------------|:---------------------------------------------------------------------------------------------------------:|
+| **Instructor** | - First Name + Last Name - Teaching Courses (Online/Onsite + Department + Number of Student by class)     |
+| **Student**    | - First Name + Last Name - Taking Courses + Grade (Online/Onsite + Department + Instructors' Information) |
+| **Course**     | - Title - Online/Onsite -  Department - Instructors' Information - Number of Students                     |
+| **On Site**    | - Schedule - Course (Department's infos + Instructors' infos + Number of Students)                        |
+| **On line**    | - URL - Course   (Department's infos + Instructors' infos + Number of Students)                           |
+| **Department** | - Dpt's Name - Administrator - Course (Department's infos + Instructors' infos + Number of Students)      |
 
 ## Configuration (VERY IMPORTANT)
 
