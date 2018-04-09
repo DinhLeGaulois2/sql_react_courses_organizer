@@ -14,18 +14,22 @@ Building a project based on an EER (Enhanced Entity-Relationship).
 ![alt text](assets/img/SchoolDataModel.jpg)
 
 ## CREATE - Data Insertion
-| CREATE | - instructor<br> - student<br> - department<br> - course<br> - set course 'Onsite'<br> - set course 'Online'<br> - course-student<br> - course- instructor<br> |
-|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                                                                             CREATE                                                                             |
+|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| - instructor<br> - student<br> - department<br> - course<br> - set course 'Onsite'<br> - set course 'Online'<br> - course-student<br> - course- instructor<br> |
+
+---
 
 ## READ - Get Requests
-|                |                                                 'Id' / All                                                |
-|----------------|:---------------------------------------------------------------------------------------------------------:|
-| **Instructor** | - First Name + Last Name - Teaching Courses (Online/Onsite + Department + Number of Student by class)     |
-| **Student**    | - First Name + Last Name - Taking Courses + Grade (Online/Onsite + Department + Instructors' Information) |
-| **Course**     | - Title - Online/Onsite -  Department - Instructors' Information - Number of Students                     |
-| **On Site**    | - Schedule - Course (Department's infos + Instructors' infos + Number of Students)                        |
-| **On line**    | - URL - Course   (Department's infos + Instructors' infos + Number of Students)                           |
-| **Department** | - Dpt's Name - Administrator - Course (Department's infos + Instructors' infos + Number of Students)      |
+|                | With 'Id' or 'All'                                                                                                                                |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Instructor** | - First Name + Last Name <br> - Teaching Courses <br>       * Online/Onsite<br>       * Department<br>       * Number of Student by class         |
+| **Student**    | - First Name + Last Name <br> - Taking Courses <br>     * Grade <br>     * Online/Onsite<br>     * Department <br>     * Instructors' Information |
+| **Course**     | - Title <br> - Online/Onsite <br> - Department <br> - Instructors' Information <br> - Number of Students                                          |
+| **On Site**    | - Schedule <br> - Course <br>     * Department's infos <br>     * Instructors' infos <br>     * Number of Students                                |
+| **Online**     | - URL <br> - Course<br>     * Department's infos<br>     * Instructors' infos<br>     * Number of Students                                        |
+| **Department** | - Dpt's Name <br> - Administrator<br> - Course<br>     * Department's infos<br>     * Instructors' infos<br>     * Number of Students             |
+
 
 ## Configuration (VERY IMPORTANT)
 
