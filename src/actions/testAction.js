@@ -5,7 +5,7 @@ import cst from '../constants/testConstant'
 const testAction = {
     testAPIRequest: () => {
         return (dispatch) => {
-            axios.get("/api/get/instructors")
+            axios.get("/api/get/students")
                 .then(data => {
                     console.log("Result: " + JSON.stringify(data, null, 5))
                 })
