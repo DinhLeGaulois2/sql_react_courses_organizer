@@ -5,11 +5,12 @@ import cst from '../constants/testConstant'
 const testAction = {
     testAPIRequest: () => {
         let obj = {
-            id: 1,
-            budget: 250000,
+            title: "Self Course",
+            credits: "3",
+            departmentId: 9
         }
         return (dispatch) => {
-            axios.put("/api/put/department/", obj)
+            axios.post("/api/add/course", obj)
                 .then(data => {
                     console.log("Result: " + JSON.stringify(data, null, 5))
                 })

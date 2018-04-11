@@ -20,14 +20,19 @@ module.exports = function (app) {
 
     app.post("/api/add/course", (req, res) => {
         const reqData = req.body
-        db.course.findOrCreate({
-            where: {
-                title: reqData.title,
-                credits: reqData.credits,
-                departmentId: reqData.dptId
-            }
-        }).then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+        db.department.findOne({ where: { id: reqData.departmentId } })
+            .then(data => {
+                if (data == null) res.status(400).json("Department Doesn't Exist!")
+                db.course.findOrCreate({
+                    where: {
+                        title: reqData.title,
+                        credits: reqData.credits,
+                        departmentId: reqData.departmentId
+                    }
+                }).then(data => res.status(200).json(data))
+                    .catch(err => res.status(400).json("Insertion: Failed! Err: " + err))
+            })
+            .catch(err => res.status(400).json("Error to access to 'department', err: " + err))
     })
 
     app.post("/api/add/instructor", (req, res) => {
@@ -61,49 +66,54 @@ module.exports = function (app) {
     app.post("/api/add/course-instructor", (req, res) => { // Checked!
         const reqData = req.body
 
-        return sequelize.transaction(t => {
-            return db.person.findOne({
-                where: { id: reqData.instructorId },
+        db.person.findOne({
+            where: { id: reqData.instructorId },
+            attributes: ['id']
+        }).then(data => {
+            if (data == null) res.status(400).json("Instructor: Not Found!")
+            let insId = data.id
+            return db.course.findOne({
+                where: { id: reqData.courseId },
                 attributes: ['id']
-            }, { transaction: t }).then(data => {
-                let insId = data.id
-                return db.course.findOne({ 
-                    where: { id: reqData.courseId },
-                    attributes: ['id']
-                 }, { transaction: t })
-                    .then(data => {
-                        return db.courseInstructor.findOrCreate({
-                            where: {
-                                courseId: data.id,
-                                instructorId: insId
-                            }
-                        }) // No "{ transaction: t }" for the last action
-                    })
             })
-        }).then(data => { res.status(200).json(data) })
+                .then(data => {
+                    if (data == null) res.status(400).json("Course: Not Found!")
+                    return db.courseInstructor.findOrCreate({
+                        where: {
+                            courseId: data.id,
+                            instructorId: insId
+                        }
+                    }) // No "{ transaction: t }" for the last action
+                })
+                .catch(err => res.status(400).json("Insertion Err: " + err))
+        })
             .catch(err => res.status(400).json("Insertion Err: " + err))
     })
 
     app.post("/api/add/course-student", (req, res) => {
-        const reqData = req.body        
+        const reqData = req.body
 
-        return sequelize.transaction(t => {
-            return db.person.findOne({
-                where: { id: reqData.studentId, type: 'student'}
-            }, { transaction: t }).then(data => {
-                return db.course.findOne({ where: { id: reqData.courseId } }, { transaction: t })
-                    .then(data => {
-                        return db.studentGrade.findOrCreate({
-                            where: {
-                                courseId: reqData.courseId,
-                                studentId: reqData.studentId,
-                                grade: ""
-                            }
-                        }) // No "{ transaction: t }" for the last action
-                    })
-            })
-        }).then(data => { res.status(200).json(data) })
-            .catch(err => res.status(400).json("Insertion Err: " + err))
+        db.person.findOne({
+            where: { id: reqData.studentId }
+        }).then(data => {
+            if (data == null) res.status(400).json("Student: Not Found!")
+            let studId = data.id
+            db.course.findOne({ where: { id: reqData.courseId } })
+                .then(data => {
+                    if (data == null) res.status(400).json("Course: Not Found!")
+                    db.studentGrade.findOrCreate({
+                        where: {
+                            courseId: data.id,
+                            studentId: studId,
+                            grade: ""
+                        }
+                    }) // No "{ transaction: t }" for the last action
+                    .then(data => res.status(100).json("Insertion Successfully!"))
+                    .catch(err => res.status(400).json(err))
+                })
+                .catch(err => res.status(400).json("Course: Not Found, err: " + err))
+        })
+            .catch(err => res.status(400).json("Student: Not Found, err: " + err))
     })
 
     app.post("/api/set/course/online", (req, res) => {
