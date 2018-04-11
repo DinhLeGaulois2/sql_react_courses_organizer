@@ -13,7 +13,7 @@ const infoACourse = (courseId) => {
             },
             {
                 model: db.onsite,
-                attributes: ['id']
+                attributes: ['id', 'location', 'days', 'time']
             },
             {
                 model: db.online,
@@ -85,7 +85,6 @@ module.exports = function (app) {
         infoACourse(req.params.id)
             .then(data => {
                 let d = data[0]
-
                 // get all instructors (it could be more than one)
                 let instructorsList = []
                 for (let i = 0; i < d.courseInstructors.length; i++) {
@@ -101,6 +100,7 @@ module.exports = function (app) {
                     title: d.title,
                     department: d.department,
                     isOnsite: d.onsites.length == 0 ? false : true,
+                    onsiteSchedule: d.onsites,
                     instructors: instructorsList,
                     students: d.studentGrades
                 }
@@ -134,6 +134,7 @@ module.exports = function (app) {
                                 title: aObj.title,
                                 department: aObj.department,
                                 isOnsite: aObj.onsites.length == 0 ? false : true,
+                                onsiteSchedule: aObj.onsites,
                                 instructors: instructorsList,
                                 studentNum: aObj.studentGrades.length
                             }
@@ -153,12 +154,10 @@ module.exports = function (app) {
         db.person.findAll({
             where: { id: req.params.id },
             attributes: ['id', 'firstName', 'lastName'],
-            include: [
-                {
-                    model: db.courseInstructor,
-                    attributes: ['courseId']
-                }
-            ]
+            include: [{
+                model: db.courseInstructor,
+                attributes: ['courseId']
+            }]
         }).then(data => {
             let objC = {
                 instructorId: data[0].id,
@@ -176,6 +175,7 @@ module.exports = function (app) {
                             title: data[0].title,
                             department: data[0].department,
                             isOnsite: data[0].onsites.length == 0 ? false : true,
+                            onsiteSchedule: data[0].onsites,
                             studentNum: data[0].studentGrades.length
                         })
                         byCourse(list)
@@ -196,12 +196,10 @@ module.exports = function (app) {
         db.person.findAll({
             where: { type: 'instructor' },
             attributes: ['id', 'lastName', 'firstName'],
-            include: [
-                {
-                    model: db.courseInstructor,
-                    attributes: ['courseId']
-                }
-            ]
+            include: [{
+                model: db.courseInstructor,
+                attributes: ['courseId']
+            }]
         })
             .then(data => {
                 let result = []
@@ -224,6 +222,7 @@ module.exports = function (app) {
                                         title: data[0].title,
                                         department: data[0].department,
                                         isOnsite: data[0].onsites.length == 0 ? false : true,
+                                        onsiteSchedule: data[0].onsites,
                                         studentNum: data[0].studentGrades.length
                                     })
                                     byCourse(cList)
@@ -250,12 +249,10 @@ module.exports = function (app) {
         db.person.findOne({
             where: { id: req.params.id },
             attributes: ['id', 'lastName', 'firstName'],
-            include: [
-                {
-                    model: db.studentGrade,
-                    attributes: ['courseId']
-                }
-            ]
+            include: [{
+                model: db.studentGrade,
+                attributes: ['courseId']
+            }]
         })
             .then(data => {
                 let student = {
@@ -297,53 +294,52 @@ module.exports = function (app) {
         db.person.findAll({
             where: { type: 'student' },
             attributes: ['id', 'lastName', 'firstName'],
-            include: [
-                {
-                    model: db.studentGrade,
-                    attributes: ['courseId']
-                }
-            ]
+            include: [{
+                model: db.studentGrade,
+                attributes: ['courseId']
+            }]
         })
-        .then(data => {
-            let result = []
-            const byStudent = (list) => {
-                if (list.length) {
-                    let aObj = list.shift()
-                    let aStud = {
-                        id: aObj.id,
-                        fName: aObj.firstName,
-                        lName: aObj.lastName
-                    }
-                    let coursesList = []
-                    // all courses giving by the instructor
-                    const byCourse = (cList) => {
-                        if (cList.length) {
-                            let aC = cList.shift()
-                            infoACourse(aC.courseId).then(data => {
-                                coursesList.push({
-                                    courseId: data[0].id,
-                                    title: data[0].title,
-                                    department: data[0].department,
-                                    isOnsite: data[0].onsites.length == 0 ? false : true,
-                                    studentNum: data[0].studentGrades.length
-                                })
-                                byCourse(cList)
-                            }).catch(err => res.status(400).json(err))
+            .then(data => {
+                let result = []
+                const byStudent = (list) => {
+                    if (list.length) {
+                        let aObj = list.shift()
+                        let aStud = {
+                            id: aObj.id,
+                            fName: aObj.firstName,
+                            lName: aObj.lastName
                         }
-                        else {
-                            aStud.courses = coursesList
-                            result.push(aStud)
-                            byStudent(list)
+                        let coursesList = []
+                        // all courses giving by the instructor
+                        const byCourse = (cList) => {
+                            if (cList.length) {
+                                let aC = cList.shift()
+                                infoACourse(aC.courseId).then(data => {
+                                    coursesList.push({
+                                        courseId: data[0].id,
+                                        title: data[0].title,
+                                        department: data[0].department,
+                                        isOnsite: data[0].onsites.length == 0 ? false : true,
+                                        onsiteSchedule: data[0].onsites,
+                                        studentNum: data[0].studentGrades.length
+                                    })
+                                    byCourse(cList)
+                                }).catch(err => res.status(400).json(err))
+                            }
+                            else {
+                                aStud.courses = coursesList
+                                result.push(aStud)
+                                byStudent(list)
+                            }
                         }
+                        byCourse([...aObj.studentGrades])
                     }
-                    byCourse([...aObj.studentGrades])
-                }
-                else res.status(200).json(result)
-            } // function 'byCourse'
-            // calling the function 'byCourse' above
-            byStudent([...data]);
+                    else res.status(200).json(result)
+                } // function 'byCourse'
+                // calling the function 'byCourse' above
+                byStudent([...data]);
 
-        })
-        .catch(err => res.status(400).json(err))
+            })
+            .catch(err => res.status(400).json(err))
     })
 }

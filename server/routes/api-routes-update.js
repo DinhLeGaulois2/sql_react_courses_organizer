@@ -1,38 +1,39 @@
 const Sequelize = require('sequelize');
-const models = require('../models') // DB's models
-var sequelize = models.sequelize
-
-
-const Op = Sequelize.Op;
 
 const db = require("../models");
 
 module.exports = function (app) {
-    ///////////////////////////////////////////////////////////////
-    /////////////////// Need to use TRANSACTION ///////////////////
-    ///////////////////////////////////////////////////////////////
 
-    app.put("/api/put/department", (req, res) => {
-        db.department.findOne({ where: { id: req.body.id } })
+    app.put("/api/put/department/", (req, res) => {
+        db.department.findAll({ where: { id: req.body.id } })
             .then(data => {
                 if (data == null)
                     res.status(400).json("The Department with the id of '" + req.body.id + "' could not be fould!")
                 else {
-                    db.department.update({
-                        budget: req.body.budget,
-                        administrator: req.body.administrator
-                    }, { where: { id: req.body.id } })
-                        .then(data => res.status(200).json("Update Successfully!"))
+                    let obj2Update = {}
+                    if (req.body.budget != "undefined") obj2Update.budget = req.body.budget
+                    if (req.body.name != "undefined") obj2Update.name = req.body.name
+                    if (req.body.administrator != "undefined") obj2Update.administrator = req.body.administrator
+
+                    db.department.update(obj2Update, { where: { id: req.body.id } })
+                        .then(data => res.status(200).json(data))
                         .catch(err => res.status(400).json(err))
                 }
             })
+            .catch(err => res.status(400).json(err))
     })
 
     app.put("/api/put/student-grade", (req, res) => {
-        db.studentGrade.update({
-            courseId: req.body.courseId,
-            studentId: req.body.studentId,
-            grade: req.body.grade
-        })
+        db.studentGrade.update(
+            {
+                grade: req.body.grade
+            }, {
+                where: {
+                    courseId: req.body.courseId,
+                    studentId: req.body.studentId,
+                }
+            })
+            .then(data => res.status(200).json(data))
+            .catch(err => res.status(400).json(err))
     })
 }

@@ -58,19 +58,24 @@ module.exports = function (app) {
             .catch(err => res.status(400).json(err))
     })
 
-    app.post("/api/add/course-instructor", (req, res) => {
+    app.post("/api/add/course-instructor", (req, res) => { // Checked!
         const reqData = req.body
 
         return sequelize.transaction(t => {
             return db.person.findOne({
-                where: { id: reqData.instructorId, type: 'instructor' }
+                where: { id: reqData.instructorId },
+                attributes: ['id']
             }, { transaction: t }).then(data => {
-                return db.course.findOne({ where: { id: reqData.courseId } }, { transaction: t })
+                let insId = data.id
+                return db.course.findOne({ 
+                    where: { id: reqData.courseId },
+                    attributes: ['id']
+                 }, { transaction: t })
                     .then(data => {
                         return db.courseInstructor.findOrCreate({
                             where: {
-                                courseId: reqData.courseId,
-                                personId: reqData.instructorId
+                                courseId: data.id,
+                                instructorId: insId
                             }
                         }) // No "{ transaction: t }" for the last action
                     })
@@ -91,7 +96,7 @@ module.exports = function (app) {
                         return db.studentGrade.findOrCreate({
                             where: {
                                 courseId: reqData.courseId,
-                                personId: reqData.studentId,
+                                studentId: reqData.studentId,
                                 grade: ""
                             }
                         }) // No "{ transaction: t }" for the last action
