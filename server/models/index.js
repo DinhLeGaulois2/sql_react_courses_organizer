@@ -1,5 +1,7 @@
 'use strict';
 
+var conf = require('../../MY_PRIVATE_FOLDER/config_params')
+
 // the Object from the library ...
 var Sequelize = require('sequelize');
 
@@ -7,7 +9,7 @@ var db = {};
 
 var DBInfo = {
     username: "root",
-    password: "",   // <----------------- Your Password here
+    password: conf.db_pwd,   // <----------------- Your Password here
     database: "courses_organizer",
     host: "127.0.0.1",
     dialect: "mysql",

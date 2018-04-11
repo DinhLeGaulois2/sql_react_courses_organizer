@@ -30,9 +30,9 @@ module.exports = function (app) {
                         departmentId: reqData.departmentId
                     }
                 }).then(data => res.status(200).json(data))
-                    .catch(err => res.status(400).json("Insertion: Failed! Err: " + err))
+                    .catch(err => res.status(400).json(err))
             })
-            .catch(err => res.status(400).json("Error to access to 'department', err: " + err))
+            .catch(err => res.status(400).json(err))
     })
 
     app.post("/api/add/instructor", (req, res) => {

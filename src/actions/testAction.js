@@ -7,7 +7,7 @@ const testAction = {
         let obj = {
             title: "Self Course",
             credits: "3",
-            departmentId: 9
+            departmentId: 1
         }
         return (dispatch) => {
             axios.post("/api/add/course", obj)

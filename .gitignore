@@ -3,7 +3,7 @@
 # compiled output
 /dist/bundle.js
 /tmp
-/EER
+/MY_PRIVATE_FOLDER
 
 # dependencies
 /node_modules
