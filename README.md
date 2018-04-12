@@ -2,7 +2,7 @@
 # (This is rather a React-Redux Architecture. Will Use ReactJS after finishing the React-Redux ...)
 
 ---
-# BUILDING: EMPTY FOR NOW ...
+# BUILDING: Backend: Done! Need 2 Add frontend ...
 
 ---
 

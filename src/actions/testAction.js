@@ -10,7 +10,7 @@ const testAction = {
             departmentId: 1
         }
         return (dispatch) => {
-            axios.post("/api/add/course", obj)
+            axios.get("/api/get/students")
                 .then(data => {
                     console.log("Result: " + JSON.stringify(data, null, 5))
                 })

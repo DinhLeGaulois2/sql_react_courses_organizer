@@ -3,7 +3,6 @@ const Sequelize = require('sequelize');
 const db = require("../models");
 
 module.exports = function (app) {
-
     app.put("/api/put/department/", (req, res) => {
         db.department.findAll({ where: { id: req.body.id } })
             .then(data => {
