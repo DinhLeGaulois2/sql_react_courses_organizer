@@ -5,20 +5,17 @@ var sequelize = models.sequelize
 const db = require("../models");
 
 module.exports = function (app) {
-    app.post("/api/add/department", (req, res) => {
+    app.post("/api/add/department", (req, res, next) => {
         const reqData = req.body
         db.department.findOrCreate({
             where: {
-                name: reqData.name,
-                budget: reqData.budget,
-                startDate: reqData.startDate,
-                administrator: reqData.administrator
+                reqData
             }
         }).then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.post("/api/add/course", (req, res) => {
+    app.post("/api/add/course", (req, res, next) => {
         const reqData = req.body
         db.department.findOne({ where: { id: reqData.departmentId } })
             .then(data => {
@@ -30,12 +27,12 @@ module.exports = function (app) {
                         departmentId: reqData.departmentId
                     }
                 }).then(data => res.status(200).json(data))
-                    .catch(err => res.status(400).json(err))
+                    .catch(next)
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.post("/api/add/instructor", (req, res) => {
+    app.post("/api/add/instructor", (req, res, next) => {
         const reqData = req.body
         db.person.findOrCreate({
             where: {
@@ -46,10 +43,10 @@ module.exports = function (app) {
                 enrollmentDate: reqData.enrollmentDate
             }
         }).then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.post("/api/add/student", (req, res) => {
+    app.post("/api/add/student", (req, res, next) => {
         const reqData = req.body
         db.person.findOrCreate({
             where: {
@@ -60,10 +57,10 @@ module.exports = function (app) {
                 enrollmentDate: reqData.enrollmentDate
             }
         }).then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.post("/api/add/course-instructor", (req, res) => { // Checked!
+    app.post("/api/add/course-instructor", (req, res, next) => { // Checked!
         const reqData = req.body
 
         db.person.findOne({
@@ -85,12 +82,12 @@ module.exports = function (app) {
                         }
                     }) // No "{ transaction: t }" for the last action
                 })
-                .catch(err => res.status(400).json("Insertion Err: " + err))
+                .catch(next)
         })
-            .catch(err => res.status(400).json("Insertion Err: " + err))
+            .catch(next)
     })
 
-    app.post("/api/add/course-student", (req, res) => {
+    app.post("/api/add/course-student", (req, res, next) => {
         const reqData = req.body
 
         db.person.findOne({
@@ -109,14 +106,14 @@ module.exports = function (app) {
                         }
                     }) // No "{ transaction: t }" for the last action
                     .then(data => res.status(100).json("Insertion Successfully!"))
-                    .catch(err => res.status(400).json(err))
+                    .catch(next)
                 })
-                .catch(err => res.status(400).json("Course: Not Found, err: " + err))
+                .catch(next)
         })
-            .catch(err => res.status(400).json("Student: Not Found, err: " + err))
+            .catch(next)
     })
 
-    app.post("/api/set/course/online", (req, res) => {
+    app.post("/api/set/course/online", (req, res, next) => {
         db.course.findOne({ where: { id: req.body.courseId } })
             .then(data => {
                 db.onlineCourse.findOrCreate({
@@ -125,12 +122,12 @@ module.exports = function (app) {
                         url: req.body.url
                     }
                 }).then(data => res.status(200).json("Set Course as 'Online' Successfully!"))
-                    .catch(err => res.status(400).json("Could not Set Course as 'Online', err: " + err))
+                    .catch(next)
             })
-            .catch(err => res.status(400).json("Could not find a course with an ID of '" + req.body.courseId + "'"))
+            .catch(next)
     })
 
-    app.post("/api/set/course/onsite", (req, res) => {
+    app.post("/api/set/course/onsite", (req, res, next) => {
         db.course.findOne({ where: { id: req.body.courseId } })
             .then(data => {
                 db.onlineCourse.findOrCreate({
@@ -141,8 +138,8 @@ module.exports = function (app) {
                         time: req.body.time
                     }
                 }).then(data => res.status(200).json("Set Course as 'Onsite' Successfully!"))
-                    .catch(err => res.status(400).json("Could not Set Course as 'Onsite', err: " + err))
+                    .catch(next)
             })
-            .catch(err => res.status(400).json("Could not find a course with an ID of '" + req.body.courseId + "'"))
+            .catch(next)
     })
 }

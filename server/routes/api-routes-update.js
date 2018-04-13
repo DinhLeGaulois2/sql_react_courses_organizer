@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const db = require("../models");
 
 module.exports = function (app) {
-    app.put("/api/put/department/", (req, res) => {
+    app.put("/api/put/department/", (req, res, next) => {
         db.department.findAll({ where: { id: req.body.id } })
             .then(data => {
                 if (data == null)
@@ -16,13 +16,13 @@ module.exports = function (app) {
 
                     db.department.update(obj2Update, { where: { id: req.body.id } })
                         .then(data => res.status(200).json(data))
-                        .catch(err => res.status(400).json(err))
+                        .catch(next)
                 }
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.put("/api/put/student-grade", (req, res) => {
+    app.put("/api/put/student-grade", (req, res, next) => {
         db.studentGrade.update(
             {
                 grade: req.body.grade
@@ -33,6 +33,6 @@ module.exports = function (app) {
                 }
             })
             .then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 }

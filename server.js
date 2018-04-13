@@ -30,6 +30,14 @@ require("./server/routes/api-routes-delete.js")(app);
 require("./server/routes/api-routes-update.js")(app);
 require("./server/routes/html-routes.js")(app);
 
+// error handling middleware
+app.use(function (err, req, res, next) {
+    res.json({ 
+        error: 422,
+        message: err.toString()
+    });
+})
+
 db.sequelize.sync({ force: true }).then(() => {
     initValues();
     app.listen(PORT, function () {

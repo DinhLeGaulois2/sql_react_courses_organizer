@@ -6,14 +6,14 @@ const testAction = {
     testAPIRequest: () => {
         let obj = {
             title: "Self Course",
-            credits: "3",
+            credits: "9",
             departmentId: 1
         }
         return (dispatch) => {
-            axios.get("/api/get/students")
+            axios.post("/api/add/department", obj)
                 .then(data => {
                     console.log("Result: " + JSON.stringify(data, null, 5))
-                })
+                }).catch(err => console.log(JSON.stringify(err, null, 5)))
 
             // axios.get("/api/get/students")
             //     .then(data => {

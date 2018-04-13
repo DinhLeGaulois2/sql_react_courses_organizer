@@ -9,7 +9,7 @@ module.exports = function (app) {
     /////////////////// Need to use TRANSACTION ///////////////////
     ///////////////////////////////////////////////////////////////
 
-    app.delete("/api/delete/department/:id", (req, res) => {
+    app.delete("/api/delete/department/:id", (req, res, next) => {
         db.course.findAll({ where: { departmentId: req.params.id } })
             .then(data => {
                 if (data == null)
@@ -17,10 +17,10 @@ module.exports = function (app) {
                         .then(data => res.status(200).json("Delation Successful!"))
                 else res.status(400).json("Department is not Empty")
             })
-            .catch(err => res.status(400).json("Delation Failed, err: " + err))
+            .catch(next)
     })
 
-    app.delete("/api/delete/course/:id", (req, res) => {
+    app.delete("/api/delete/course/:id", (req, res, next) => {
         db.courseInstructor.findAll({ where: { courseId: req.params.id } })
             .then(data => {
                 if (data == null) { // No instructor teaches this course
@@ -39,16 +39,16 @@ module.exports = function (app) {
                                     })
                             })
                         }).then(data => { res.status(200).json(data) })
-                            .catch(err => res.status(400).json("Deletion error: " + err))
+                            .catch(next)
                     }
                     else res.status(400).json("Course Still Has Student, Delation Failed!")
                 }
                 else res.status(400).json("Course Still Has Instructor, Delation Failed!")
             })
-            .catch(err => res.status(400).json("Delation Failed, err: " + err))
+            .catch(next)
     })
 
-    app.delete("/api/delete/instructor/:id", (req, res) => {// We need to use TRANSACTION to delete 3 documents in 3 tables
+    app.delete("/api/delete/instructor/:id", (req, res, next) => {// We need to use TRANSACTION to delete 3 documents in 3 tables
         return sequelize.transaction(t => {
             return db.courseInstructor.destroy({
                 where: { personId: req.params.id }
@@ -57,10 +57,10 @@ module.exports = function (app) {
                 return db.person.destroy({ where: { id: req.params.id, type: 'instructor' } })
             })
         }).then(data => { res.status(200).json(data) })
-            .catch(err => res.status(400).json("Deletion error: " + err))
+            .catch(next)
     })
 
-    app.delete("/api/delete/student/:id", (req, res) => {
+    app.delete("/api/delete/student/:id", (req, res, next) => {
         return sequelize.transaction(t => {
             return db.studentGrade.destroy({
                 where: { personId: req.params.id }
@@ -69,6 +69,6 @@ module.exports = function (app) {
                 return db.person.destroy({ where: { id: req.params.id, type: 'student' } })
             })
         }).then(data => { res.status(200).json(data) })
-            .catch(err => res.status(400).json("Deletion error: " + err))
+            .catch(next)
     })
 }

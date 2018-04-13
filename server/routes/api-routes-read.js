@@ -36,7 +36,7 @@ const infoACourse = (courseId) => {
 }
 
 module.exports = function (app) {
-    app.get("/api/get/department/:id/", (req, res) => {
+    app.get("/api/get/department/:id/", (req, res, next) => {
         db.department.findAll({
             where: { id: req.params.id },
             attributes: ['id', 'name', 'administrator'],
@@ -55,11 +55,11 @@ module.exports = function (app) {
                 ]
             }]
         })
-            .then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+            .then(data => res.json(data))
+            .catch(next)
     })
 
-    app.get("/api/get/departments", (req, res) => {
+    app.get("/api/get/departments", (req, res, next) => {
         db.department.findAll({
             attributes: ['id', 'name', 'administrator'],
             include: [{
@@ -78,10 +78,10 @@ module.exports = function (app) {
             }]
         })
             .then(data => res.status(200).json(data))
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.get("/api/get/course/:id", (req, res) => {
+    app.get("/api/get/course/:id", (req, res, next) => {
         infoACourse(req.params.id)
             .then(data => {
                 let d = data[0]
@@ -106,11 +106,11 @@ module.exports = function (app) {
                 }
                 res.status(200).json(result)
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
 
-    app.get("/api/get/courses", (req, res) => {
+    app.get("/api/get/courses", (req, res, next) => {
         let result = [];
         db.course.findAll({ attributes: ['id'] })
             .then(data => {
@@ -140,17 +140,17 @@ module.exports = function (app) {
                             }
                             result.push(objC)
                             byCourse(list)
-                        }).catch(err => res.status(400).json("Erron on getting info for a course, err: " + err))
+                        }).catch(next)
                     }
                     else res.status(200).json(result)
                 } // function 'byCourse'
                 // calling the function 'byCourse' above
                 byCourse([...data]);
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.get("/api/get/instructor/:id", (req, res) => {
+    app.get("/api/get/instructor/:id", (req, res, next) => {
         db.person.findAll({
             where: { id: req.params.id },
             attributes: ['id', 'firstName', 'lastName'],
@@ -179,7 +179,7 @@ module.exports = function (app) {
                             studentNum: data[0].studentGrades.length
                         })
                         byCourse(list)
-                    }).catch(err => res.status(400).json(err))
+                    }).catch(next)
                 }
                 else {
                     objC.courses = cList;
@@ -189,10 +189,10 @@ module.exports = function (app) {
             // calling the function 'byCourse' above
             byCourse([...data[0].courseInstructors]);
         })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.get("/api/get/instructors", (req, res) => {
+    app.get("/api/get/instructors", (req, res, next) => {
         db.person.findAll({
             where: { type: 'instructor' },
             attributes: ['id', 'lastName', 'firstName'],
@@ -226,7 +226,7 @@ module.exports = function (app) {
                                         studentNum: data[0].studentGrades.length
                                     })
                                     byCourse(cList)
-                                }).catch(err => res.status(400).json(err))
+                                }).catch(next)
                             }
                             else {
                                 aInstr.courses = coursesList
@@ -242,10 +242,10 @@ module.exports = function (app) {
                 byInstructor([...data]);
 
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.get("/api/get/student/:id", (req, res) => {
+    app.get("/api/get/student/:id", (req, res, next) => {
         db.person.findOne({
             where: { id: req.params.id },
             attributes: ['id', 'lastName', 'firstName'],
@@ -287,10 +287,10 @@ module.exports = function (app) {
                 }
                 byCourse([...data.studentGrades])
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 
-    app.get("/api/get/students", (req, res) => {
+    app.get("/api/get/students", (req, res, next) => {
         db.person.findAll({
             where: { type: 'student' },
             attributes: ['id', 'lastName', 'firstName'],
@@ -324,7 +324,7 @@ module.exports = function (app) {
                                         studentNum: data[0].studentGrades.length
                                     })
                                     byCourse(cList)
-                                }).catch(err => res.status(400).json(err))
+                                }).catch(next)
                             }
                             else {
                                 aStud.courses = coursesList
@@ -340,6 +340,6 @@ module.exports = function (app) {
                 byStudent([...data]);
 
             })
-            .catch(err => res.status(400).json(err))
+            .catch(next)
     })
 }
