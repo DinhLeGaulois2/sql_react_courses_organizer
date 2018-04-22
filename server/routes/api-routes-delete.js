@@ -8,7 +8,6 @@ module.exports = function (app) {
     ///////////////////////////////////////////////////////////////
     /////////////////// Need to use TRANSACTION ///////////////////
     ///////////////////////////////////////////////////////////////
-
     app.delete("/api/delete/department/:id", (req, res, next) => {
         db.course.findAll({ where: { departmentId: req.params.id } })
             .then(data => {
