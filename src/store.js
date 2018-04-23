@@ -5,7 +5,6 @@ import promise from "redux-promise-middleware";
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { reducer as reduxFormReducer } from 'redux-form'
 
-import testReducer from './reducers/testReducer'
 import courses_organizer_reducer from './reducers/courses_organizer/courses_organizer_reducer'
 
 const middleware = applyMiddleware(promise(), thunk, logger());
