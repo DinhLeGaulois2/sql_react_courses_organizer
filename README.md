@@ -1,5 +1,4 @@
 # Courses Organizer - ReactJS
-# (This is rather a React-Redux Architecture. Will Use ReactJS after finishing the React-Redux ...)
 
 ---
 # BUILDING: Backend: Done! Need 2 Add frontend ...
