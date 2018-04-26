@@ -15,10 +15,7 @@ module.exports = function (sequelize, Sequelize) {
             type: Sequelize.INTEGER
         },
         startDate: {
-            type: Sequelize.DATE,
-            validate: {
-                notEmpty: true,
-            }
+            type: Sequelize.DATE
         },
         administrator: {
             type: Sequelize.STRING,

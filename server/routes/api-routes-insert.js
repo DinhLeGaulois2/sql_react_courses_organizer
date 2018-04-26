@@ -8,9 +8,7 @@ module.exports = function (app) {
     app.post("/api/add/department", (req, res, next) => {
         const reqData = req.body
         db.department.findOrCreate({
-            where: {
-                reqData
-            }
+            where: reqData
         }).then(data => res.status(200).json(data))
             .catch(next)
     })
@@ -35,13 +33,7 @@ module.exports = function (app) {
     app.post("/api/add/instructor", (req, res, next) => {
         const reqData = req.body
         db.person.findOrCreate({
-            where: {
-                lastName: reqData.lastName,
-                firstName: reqData.firstName,
-                type: 'instructor',
-                hireDate: reqData.hireDate,
-                enrollmentDate: reqData.enrollmentDate
-            }
+            where: reqData
         }).then(data => res.status(200).json(data))
             .catch(next)
     })
@@ -49,13 +41,7 @@ module.exports = function (app) {
     app.post("/api/add/student", (req, res, next) => {
         const reqData = req.body
         db.person.findOrCreate({
-            where: {
-                lastName: reqData.lastName,
-                firstName: reqData.firstName,
-                type: 'student',
-                hireDate: reqData.hireDate,
-                enrollmentDate: reqData.enrollmentDate
-            }
+            where: reqData
         }).then(data => res.status(200).json(data))
             .catch(next)
     })
@@ -105,8 +91,8 @@ module.exports = function (app) {
                             grade: ""
                         }
                     }) // No "{ transaction: t }" for the last action
-                    .then(data => res.status(100).json("Insertion Successfully!"))
-                    .catch(next)
+                        .then(data => res.status(100).json("Insertion Successfully!"))
+                        .catch(next)
                 })
                 .catch(next)
         })

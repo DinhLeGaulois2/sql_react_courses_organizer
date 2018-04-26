@@ -41,8 +41,8 @@ db.courseInstructor.belongsTo(db.person, {foreignKey: 'instructorId'});
 db.courseInstructor.belongsTo(db.course);
 db.course.hasMany(db.courseInstructor);
 
-db.person.hasMany(db.studentGrade, {foreignKey: 'studendId'});
-db.studentGrade.belongsTo(db.person, {foreignKey: 'studendId'});
+db.person.hasMany(db.studentGrade, {foreignKey: 'studentId'});
+db.studentGrade.belongsTo(db.person, {foreignKey: 'studentId'});
 
 db.studentGrade.belongsTo(db.course);
 db.course.hasMany(db.studentGrade);

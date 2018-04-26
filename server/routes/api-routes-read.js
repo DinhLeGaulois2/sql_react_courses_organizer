@@ -29,7 +29,7 @@ const infoACourse = (courseId) => {
             },
             {
                 model: db.studentGrade,
-                attributes: ['id', 'studendId']
+                attributes: ['id', 'studentId']
             }
         ]
     })
