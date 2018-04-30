@@ -1,5 +1,7 @@
 import React from "react";
 
+import '../../style.scss'
+
 export default class AddCourseComponent extends React.Component {
     constructor(props) {
         super(props);

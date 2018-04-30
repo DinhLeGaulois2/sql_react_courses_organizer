@@ -1,5 +1,7 @@
 import React from "react";
 
+import '../../style.scss'
+
 export default class DisplayAInstructorComponent extends React.Component {
     constructor(props) {
         super(props);
